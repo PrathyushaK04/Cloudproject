@@ -30,7 +30,7 @@ public class User extends HttpServlet {
     public User() {
         super();
         // TODO Auto-generated constructor stub
-    // test
+    
     }
 
 	/**
