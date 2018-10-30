@@ -39,6 +39,7 @@
 						<th>File Size</th>
 						<th>File Upload Time</th>
 						<th>File Updated Time</th>
+						<th>Download</th>
 						<th>Delete</th>
 					</thead>
 <tbody class="dtr">
@@ -53,7 +54,7 @@ for(UserModel usermodel : a)
 	<td><% out.println(usermodel.getFileSize());%>KB</td>
 	<td> <%out.println(usermodel.getCreatedTime());%></td>
 	 <td> <%out.println(usermodel.getUpdatedTime()); %></td>
-	
+	<td><button><a href="https://s3-us-west-2.amazonaws.com/cloudstorebucket/<%=usermodel.getEmailId()%>/<%=usermodel.getFileName()%>"><span class="glyphicon glyphicon-cloud-download"></span></a></button></td>
 	<form action="User?name=admindelete" method="post">
 	<input type="hidden" name="emailid" value="<%=usermodel.getEmailId() %>">
 		<input type="hidden" name="filename" value="<%=usermodel.getFileName() %>">

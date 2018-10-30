@@ -30,8 +30,6 @@ public class User extends HttpServlet {
     public User() {
         super();
         // TODO Auto-generated constructor stub
-//comment
-    
     }
 
 	/**
@@ -63,9 +61,7 @@ public class User extends HttpServlet {
 		    else if(request.getParameter("name").equals("login")) {
 				String emailid=request.getParameter("emailid");
 				String pwd=request.getParameter("pwd");
-				System.out.println("hi");
 				if(new UserDAO().validateUserDetails(emailid,pwd)) {
-					System.out.println("hi1");
 					String username = new UserDAO().retrieveName(emailid);
 					ArrayList<UserModel> files = new UserDAO().retrieveFiles(emailid);
 					if(files != null) {		
@@ -144,7 +140,6 @@ public class User extends HttpServlet {
 		             System.out.println(filesize);
 		             inputStream = filePart.getInputStream(); 
 		             if(new UserDAO().uploadObject(filename,filePart,inputStream,emailid)) {
-		            		System.out.println("a3");
 				     if(new UserDAO().uploadFile(filename,description,filesize,emailid)) {	
 
 					 ArrayList<UserModel> files = new UserDAO().retrieveFiles(emailid);	
@@ -152,6 +147,7 @@ public class User extends HttpServlet {
 							request.setAttribute("name", "success");
 					    request.setAttribute("files",files);
 					    request.setAttribute("username",username);
+					    request.setAttribute("emailid",emailid);
 					    request.getRequestDispatcher("dashboard.jsp").forward(request, response);
 				     }
 					 else
@@ -187,19 +183,12 @@ public class User extends HttpServlet {
 		    else if(request.getParameter("name").equals("delete")) {
 		    	 String emailid = request.getParameter("emailid"); 
 		    	 String filename = request.getParameter("filename");
-		    	 System.out.println(emailid);
-		    	 System.out.println(filename);
 		    	 ArrayList<UserModel> files1 = new UserDAO().retrieveFiles(emailid);
 		    	 String username = new UserDAO().retrieveName(emailid);
 		    	 if(new UserDAO().deleteObject(filename,emailid)) {
 		    	 if(new UserDAO().deleteFile(filename,emailid)) {
-		    		
-		 			System.out.println(username);
-		 			System.out.println(emailid);
 		 			ArrayList<UserModel> files = new UserDAO().retrieveFiles(emailid);
-		 			System.out.println(files);
 		 			if(files != null) {		
-		 				System.out.println("yes");
 		 				request.setAttribute("emailid",emailid);
 		 			request.setAttribute("files",files);
 		 			request.setAttribute("username",username);
@@ -207,7 +196,6 @@ public class User extends HttpServlet {
 		 		     }
 		 			else
 		 			{
-		 				System.out.println("no");
 		 				request.setAttribute("emailid",emailid);
 		 				request.setAttribute("username",username);
 		 				request.setAttribute("files", null);
