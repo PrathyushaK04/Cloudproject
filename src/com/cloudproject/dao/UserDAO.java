@@ -35,21 +35,16 @@ public class UserDAO {
 	final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 	public boolean storeUserDetails(String fname,String lname,String emailid, String pwd)
 	{
-		System.out.println("hi");
 		String sql="insert into User(firstname,lastname,emailid,password) values (?,?,?,?)";
-		System.out.println("hi");
 		GetConnection gc= new GetConnection();
 		try {
-			System.out.println("hi");
 			gc.ps= GetConnection.getMySqlConnection().prepareStatement(sql);
-			System.out.println("hi2");
 			gc.ps.setString(1,fname);
 			gc.ps.setString(2, lname);
 			gc.ps.setString(3, emailid);
 			gc.ps.setString(4, pwd);
 			int i= gc.ps.executeUpdate();
 			if(i !=0 ) {
-				System.out.println("hi");
 			return true;
 			}
 		} catch (SQLException e) {
@@ -179,7 +174,6 @@ public class UserDAO {
 		String sql="update Files SET description=?,fileSize=? where filename=? && emailid=?";		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		GetConnection gc= new GetConnection();
-		System.out.println(timestamp);
 			gc.ps= GetConnection.getMySqlConnection().prepareStatement(sql);
 			gc.ps.setString(1,description);
 			gc.ps.setLong(2, filesize);
@@ -220,32 +214,18 @@ public class UserDAO {
 	//	final AmazonS3 s3Client = AmazonS3ClientBuilder.defaultClient();
 		// create meta-data for your folder and set content-length to 0
 		try {
-			System.out.println(emailid);
 			ObjectMetadata metadata = new ObjectMetadata();
-	
-			System.out.println("b");
 		metadata.setContentLength(part.getSize());
 		metadata.setContentLength(Long.valueOf(part.getInputStream().available()));
-		//String ext = FilenameUtils.getExtension(part.getName());
-		//String keyName = fileName + '.' + ext;
 		String keyName = emailid + SUFFIX + fileName;		
-		// create empty content
-		// create a PutObjectRequest passing the folder name suffixed by /	
-		// send request to S3 to create folder	
-		//request.setMetadata(metadata);
-		System.out.println("b1");
 		s3Client.putObject(new PutObjectRequest(bucketname , keyName, part.getInputStream(),metadata));
-		System.out.println("b2");
 		return true;
 		}
 		
 	catch(AmazonServiceException e) {
-           // The call was transmitted successfully, but Amazon S3 couldn't process 
-          //  it, so it returned an error response.
            e.printStackTrace();
       }
 	catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -289,11 +269,9 @@ public class UserDAO {
 	}
 	public boolean deleteFile(String filename,String emailid) {
 		String sql = "delete from Files where filename=? && emailid=?";
-		System.out.println("delete");
 		GetConnection gc= new GetConnection();
 		try {
 			gc.ps= GetConnection.getMySqlConnection().prepareStatement(sql);
-			System.out.println("delete");
 			gc.ps.setString(1, filename);
 			gc.ps.setString(2, emailid);
 						

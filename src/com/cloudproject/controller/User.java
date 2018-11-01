@@ -136,8 +136,9 @@ public class User extends HttpServlet {
 				if (filePart != null) {
 					 String filename = getFileName(filePart);			
 		           //String documentType = filePart.getContentType();
+				 Long filesize1 = filePart.getSize() / 1024 / 1024 ;
+				 if(filesize1 < 10 ) {
 		             Long filesize = filePart.getSize() / 1024 ;
-		             System.out.println(filesize);
 		             inputStream = filePart.getInputStream(); 
 		             if(new UserDAO().uploadObject(filename,filePart,inputStream,emailid)) {
 				     if(new UserDAO().uploadFile(filename,description,filesize,emailid)) {	
@@ -154,6 +155,7 @@ public class User extends HttpServlet {
 					 {
 					    request.setAttribute("username",username);
 					    request.setAttribute("files", null);
+					    request.setAttribute("emailid",emailid);
 						request.getRequestDispatcher("dashboard.jsp").forward(request, response);
 					 }
 				     }
@@ -162,6 +164,7 @@ public class User extends HttpServlet {
 					 request.setAttribute("name", "upload failed");
 	    			 request.setAttribute("username",username);
 					    request.setAttribute("files", files1);
+					    request.setAttribute("emailid",emailid);
 						request.getRequestDispatcher("dashboard.jsp").forward(request, response);
 				     }		
 		             }
@@ -170,8 +173,17 @@ public class User extends HttpServlet {
 		    			request.setAttribute("name", "upload failed");
 		    			 request.setAttribute("username",username);
 						    request.setAttribute("files", files1);
+						    request.setAttribute("emailid",emailid);
 							request.getRequestDispatcher("dashboard.jsp").forward(request, response);
-		    		 }    		
+		    		 } 
+				 }
+		             else {
+		            	 request.setAttribute("name", "File size exceeds 10 MB");
+		    			 request.setAttribute("username",username);
+						    request.setAttribute("files", files1);
+						    request.setAttribute("emailid",emailid);
+							request.getRequestDispatcher("dashboard.jsp").forward(request, response);
+		             }
 		       }   	
 				else
 				{
